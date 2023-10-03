@@ -1,0 +1,12 @@
+┣ 📂client
+┃ ┗ 📜README.md
+┣ 📂common
+┃ ┗ 📜boilerplate.txt
+┣ 📂maic
+┃ ┗ 📜README.md
+┣ 📂server
+┃ ┗ 📜README.md
+┣ 📜.env
+┣ 📜.gitattributes
+┣ 📜LICENSE
+┗ 📜README.md
