@@ -1,8 +1,12 @@
 const express = require('express')
+const bodyParser = require('body-parser')
 const app = express()
 require('dotenv').config()
 const addr = process.env.ADDRESS
 const port = process.env.PORT
+
+
+app.use(bodyParser.json())
 
 // ATTENTION! This server is HTTP only by now!
 
@@ -34,6 +38,42 @@ app.get('/api/:uID/idealconfig', (req, res) => {
   const id = `${uID}`
   console.log(`Request Received: ${{...req}} | time: [ ${Date.now()} ]`)
   res.json({ uID: id, session: 3, lastExperiment: 45 })
+})
+
+const students = []
+for(let x = 0; x < 5; x++) {
+  const student = {
+    id: x,
+    input: [[0,0], [0,0]], //array of (x,y), 1º = arm, 2º = target
+    expected: [45, 90, 360, 190, 140], //expected degrees for each part of the arm
+    train: {} //train info
+  }
+  students.push(student)
+}
+
+app.get('/api/students', (req, res) => {
+  console.log(`Request Received: ${{...req}} | time: [ ${Date.now()} ]`)
+  res.json(students)
+})
+
+// app.post('/api/results', (req, res) => {
+//   console.log('Received data:', req.body);
+//   res.json({message: 'Data received successfully.'});
+// })
+app.post('/api/results', (req, res) => {
+  const data = req.body
+  students.forEach(e => {
+    if(e.id == data.id) {
+      const update = { lastErrorRate: data.errorRate, finished: data.finished}
+      e.train = update
+      console.log("here", e)
+    }
+  })
+  // console.log(data)
+  console.log(data.id, students.find(e => e.id === data.id))
+  // console.log(`Request Received: ${{...req}} | time: [ ${Date.now()} ]`)
+  console.log('Received data:', req.body)
+  res.json({ message: 'Data received successfully' })
 })
 
 // Starts the server

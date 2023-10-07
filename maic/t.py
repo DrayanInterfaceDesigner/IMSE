@@ -4,31 +4,30 @@ import model
 import train
 import multiprocessing
 
-def train_parallel(instance):
-    print(instance)
-    instance.train()
+
+def worker_function(instance):
+    print( instance + 1)
 
 if __name__ == "__main__":
-    
+    # Create a pool of processes
+    pool = multiprocessing.Pool()
     maic = MAIC(model.Model, train.Train)
-    instances = []
-
     students = connection.fetch("http://localhost:5500/api/students", {
         'method': 'GET',
         'headers': {'Content-Type': 'application/json'}
     })
 
+    instances = []
     for student in students:
         instances.append(
             train.Train(maic, model.Model, student)
         )
-    
-    # for instance in instances:
-    #     instance.train()
-    
-    pool = multiprocessing.Pool()
-    pool.map(train_parallel, instances)
+    # Define a list of values to process
+    values = [1, 2, 3, 4, 5]
+
+    # Use the pool to map the worker function to the values
+    pool.map(worker_function, values)
+
+    # Close the pool and wait for the worker processes to finish
     pool.close()
     pool.join()
-
-    maic.parallelize()
