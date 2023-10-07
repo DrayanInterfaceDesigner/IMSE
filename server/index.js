@@ -33,6 +33,7 @@ app.get('/api/:uID/idealconfig', (req, res) => {
   const { uID } = req.params
   const id = `${uID}`
   console.log(`Request Received: ${{...req}} | time: [ ${Date.now()} ]`)
+  res.json({ uID: id, session: 3, lastExperiment: 45 })
 })
 
 // Starts the server
