@@ -56,12 +56,10 @@ app.get('/api/students', (req, res) => {
   res.json(students)
 })
 
-// app.post('/api/results', (req, res) => {
-//   console.log('Received data:', req.body);
-//   res.json({message: 'Data received successfully.'});
-// })
+
 app.post('/api/results', (req, res) => {
   const data = req.body
+  
   students.forEach(e => {
     if(e.id == data.id) {
       const update = { lastErrorRate: data.errorRate, finished: data.finished}
@@ -69,9 +67,8 @@ app.post('/api/results', (req, res) => {
       console.log("here", e)
     }
   })
-  // console.log(data)
+
   console.log(data.id, students.find(e => e.id === data.id))
-  // console.log(`Request Received: ${{...req}} | time: [ ${Date.now()} ]`)
   console.log('Received data:', req.body)
   res.json({ message: 'Data received successfully' })
 })
