@@ -1,11 +1,12 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
+const cors = require('cors')
 require('dotenv').config()
 const addr = process.env.ADDRESS
 const port = process.env.PORT
 
-
+app.use(cors())
 app.use(bodyParser.json())
 
 // ATTENTION! This server is HTTP only by now!

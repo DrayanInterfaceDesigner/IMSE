@@ -40,7 +40,7 @@ class SimpleNet(nn.Module):
         return x
 
 class ComplexNet(nn.Module):
-    def __init__(self, num_input, num_output, num_hidden_layers=3, hidden_layer_size=16):
+    def __init__(self, num_input, num_output, num_hidden_layers=32, hidden_layer_size=128):
         super(ComplexNet, self).__init__()
 
         self.num_input = num_input
@@ -113,7 +113,7 @@ for attempt in range(max_attempts):
     attps.append(loss.item() % 100)
     inputs = outputs.detach()
     # Check if the loss is below a certain threshold (you can set your threshold)
-    if loss.item() < 0.2:
+    if loss.item() < 0.01:
         break
 
 print(f"Training completed in {attempt+1} attempts.")
