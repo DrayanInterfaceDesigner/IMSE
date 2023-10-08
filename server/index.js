@@ -47,7 +47,7 @@ for(let x = 0; x < 5; x++) {
     id: x,
     input: [[0,0], [0,0]], //array of (x,y), 1º = arm, 2º = target
     expected: [45, 90, 360, 190, 140], //expected degrees for each part of the arm
-    train: {} //train info
+    train: {lastErrorRate: 0, status: "inactive"} //train info
   }
   students.push(student)
 }
@@ -63,7 +63,7 @@ app.post('/api/results', (req, res) => {
   
   students.forEach(e => {
     if(e.id == data.id) {
-      const update = { lastErrorRate: data.errorRate, finished: data.finished}
+      const update = { lastErrorRate: data.errorRate, status: data.status}
       e.train = update
       console.log("here", e)
     }

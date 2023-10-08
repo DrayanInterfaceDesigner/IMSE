@@ -23,8 +23,9 @@ class Train:
 
             if x < 200:
                 req['body']['errorRate'] = random.uniform(0, 100)
+                req['body']['status'] = "running"
             else:
-                req['body']['finished'] = True
+                req['body']['status'] = "finished"
                 req['body']['errorRate'] = 99.9
                 self.emmit_alert_finished(None)
 

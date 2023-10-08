@@ -26,15 +26,25 @@ function App() {
   const [users, setUsers] = useState([])
   
   useEffect(() => {
-    // Fetch users data and update the state when the component mounts
-    get_users('http://localhost:5500/api/students')
-      .then((data) => {
-        setUsers(data); // Update the state with the fetched data
-      })
-      .catch((error) => {
+    const fetchData = async () => {
+      try {
+        const data = await get_users('http://localhost:5500/api/students');
+        setUsers(data);
+      } catch (error) {
         console.error(error);
-      });
-  }, []); // Empty dependency array to run the effect only once
+      }
+    }
+  
+    // Poll every 5 seconds (adjust the interval as needed)
+    const pollInterval = setInterval(fetchData, 1000)
+  
+    // Cleanup on unmount
+    return () => {
+      clearInterval(pollInterval)
+    }
+  
+  }, [])
+  
 
 
   console.log(users)

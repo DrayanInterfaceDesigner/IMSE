@@ -12,7 +12,7 @@ const Table = (props) => {
                 <table className={`Table__table ${styles.UserTable}`}>
                     <thead>
                         <tr>
-                        <th>Name</th>
+                        <th>ID</th>
                         <th>Input</th>
                         <th>Expected</th>
                         <th>ErrorRate</th>
@@ -25,8 +25,8 @@ const Table = (props) => {
                             <td>{user.id}</td>
                             <td>{user.input}</td>
                             <td>{user.expected}</td>
-                            <td>{user.errorRate}</td>
-                            <td>{user.finished}</td>
+                            <td>{user?.train?.lastErrorRate}</td>
+                            <td>{user?.train?.status}</td>
                         </tr>
                         ))}
                     </tbody>
