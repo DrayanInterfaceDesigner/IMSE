@@ -1,10 +1,14 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const mysql = require('mysql2');
 const app = express()
 const cors = require('cors')
+// const {SQLJinn} = require('./modules/SQLJinn')
+
 require('dotenv').config()
 const addr = process.env.ADDRESS
 const port = process.env.PORT
+// const SJ = new SQLJinn('database.env')
 
 app.use(cors())
 app.use(bodyParser.json())
@@ -41,12 +45,15 @@ app.get('/api/:uID/idealconfig', (req, res) => {
   res.json({ uID: id, session: 3, lastExperiment: 45 })
 })
 
+
+const rand = () => {return Math.round(Math.random() * 360)}
+
 const students = []
 for(let x = 0; x < 5; x++) {
   const student = {
     id: x,
     input: [[0,0], [0,0]], //array of (x,y), 1º = arm, 2º = target
-    expected: [45, 90, 360, 190, 140], //expected degrees for each part of the arm
+    expected: [rand(), rand(), rand(), rand(), rand(), rand(), rand(), rand()], //expected degrees for each part of the arm
     train: {lastErrorRate: 0, status: "inactive"} //train info
   }
   students.push(student)
@@ -73,6 +80,80 @@ app.post('/api/results', (req, res) => {
   console.log('Received data:', req.body)
   res.json({ message: 'Data received successfully' })
 })
+
+// Perform your database operations here
+console.log("performing things")
+
+
+// Fetch all students from the "students" table
+// connection.query('SELECT * FROM students', (err, results) => {
+//   if (err) {
+//     console.error('Error executing the query:', err);
+//     return;
+//   }
+
+//   console.log('List of students in JSON format:');
+//   const studentsJSON = JSON.stringify(results);
+//   console.log(studentsJSON);
+
+//   // Close the connection after the query
+//   connection.end();
+// });
+
+// SJ.query('SELECT * FROM students').then(res => {
+//   console.log(res)
+// })
+
+
+// // const SJ = new SQLJinn('database.env') ta lá em cima
+// const QUERY_pegarExperimentos = `
+// SELECT students.id AS student_id, experiments.*
+// FROM students
+// LEFT JOIN experiments ON students.id = experiments.student_id;
+
+// `
+// SJ.query(QUERY_pegarExperimentos).then(res => {
+//   const results = res.reduce((acc, item) => {
+    
+//     if(item.student_id) {
+//       const student = acc.find((s) => s.student_id === item.student_id)
+  
+//       if (student) {
+//         student.experiments.push({
+//           experiment_id: item.experiment_id,
+//           info: item.info,
+//         })
+//       } else {
+//         acc.push({
+//           student_id: item.student_id,
+//           experiments: [
+//             {
+//               experiment_id: item.experiment_id,
+//               info: item.info,
+//             },
+//           ],
+//         })
+//       }
+//     }
+//     return acc
+//   }, [])
+
+//   console.log(JSON.stringify(results))
+// })
+
+
+
+
+
+// When done, close the connection
+// connection.end((err) => {
+//   if (err) {
+//     console.error('Error closing the connection:', err);
+//     return;
+//   }
+//   console.log('Connection closed');
+// });
+
 
 // Starts the server
 app.listen(port, () => {

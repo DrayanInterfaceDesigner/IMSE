@@ -1,16 +1,17 @@
 import connection
 from maic import MAIC
-import model
 import train
 import multiprocessing
+from model import Model
+from mount import Mount
 
 def train_parallel(instance):
     print(instance)
-    instance.train()
+    instance.run()
 
 if __name__ == "__main__":
     
-    maic = MAIC(model.Model, train.Train)
+    maic = MAIC(Model, train.Train)
     instances = []
 
     students = connection.fetch("http://localhost:5500/api/students", {
@@ -19,8 +20,9 @@ if __name__ == "__main__":
     })
 
     for student in students:
+        net = Model(num_input=8, num_output=8)
         instances.append(
-            train.Train(maic, model.Model, student)
+            Mount(student, net)
         )
     
     # for instance in instances:

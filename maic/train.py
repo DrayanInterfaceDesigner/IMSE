@@ -1,6 +1,8 @@
 from maic import MAIC
 import connection
 import random
+from model import Model
+from mount import Mount
 
 class Train:
     def __init__(self, maic: MAIC, model, info) -> None:
