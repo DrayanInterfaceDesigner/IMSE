@@ -83,15 +83,22 @@ app.get('/api/students', (req, res) => {
 })
 
 
-// Gets the last enqueued student, then dequeues it
+// Gets the last enqueued student
 app.get('/api/peek', (req, res) => {
   console.log(`[/Peek] Request Received: ${{...req}} | time: [ ${Date.now()} ]`)
   const response = {
     isEmpty: queue.isEmpty(),
     enqueued: queue.peek()?.value || null
   }
-  queue.dequeue()
   res.json(response)
+})
+
+
+// Dequeues the FIFO student
+app.get('/api/dequeue', (req, res) => {
+  console.log(`[/dequeue] Request Received: ${{...req}} | time: [ ${Date.now()} ]`)
+  queue.dequeue()
+  res.json({ message: 'Dequeued successfully!' })
 })
 
 
