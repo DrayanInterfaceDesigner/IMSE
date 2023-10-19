@@ -1,0 +1,21 @@
+:root {
+    --main-font: 'Montserrat', sans-serif;
+    --special-font: 'Raleway', sans-serif;
+    font-size: 2vw;
+    --text-bright: #F2F2F2;
+    --text-black: #070707;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body, h1, h2, p {
+  margin: 0;
+  padding: 0;
+}
+  
+body {
+  font-family: var(--main-font);
+  color: var(--main-color);
+}

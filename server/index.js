@@ -2,8 +2,10 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const mysql = require('mysql2');
 const app = express()
-const cors = require('cors')
-// const {SQLJinn} = require('./modules/SQLJinn')
+const cors = require('cors');
+const { StudentFactory } = require('./modules/StudentFactory');
+const { Queue } = require('./modules/Queue');
+const {SQLJinn} = require('./modules/SQLJinn')
 
 require('dotenv').config()
 const addr = process.env.ADDRESS
@@ -12,6 +14,32 @@ const port = process.env.PORT
 
 app.use(cors())
 app.use(bodyParser.json())
+
+
+/* -----------HERE STARTS THE STUFF----------- */
+
+// Creating(caching) fake students
+const students = new StudentFactory()
+students.makeFakeStudents()
+
+/* 
+  You can also use:
+    students.populate(new SQLJinn(`env path`).query(`query here`))
+  To get them from the DB instead.
+
+  Warning, they must have this look (or be adapted later), to be used properly:
+  {
+    id: x,
+    input: [1, 2, 3, 4, 5, 6, 7, 8], //array of angles (can be random)
+    expected: [1, 2, 3, 4, 5, 6, 7, 8], //expected angles for each part of the arm
+    train: {lastErrorRate: 0, status: "inactive"} // train info (BASE)
+  }
+*/
+
+// Queue for cached students
+const queue = new Queue()
+
+/* ----------- ROUTES ----------- */
 
 // ATTENTION! This server is HTTP only by now!
 
@@ -38,6 +66,8 @@ app.use(bodyParser.json())
   configuration.
 
 */
+
+// Gets the ideal configuration for a specified student (ID)
 app.get('/api/:uID/idealconfig', (req, res) => {
   const { uID } = req.params
   const id = `${uID}`
@@ -46,40 +76,46 @@ app.get('/api/:uID/idealconfig', (req, res) => {
 })
 
 
-const rand = () => {return Math.round(Math.random() * 360)}
-
-const students = []
-for(let x = 0; x < 5; x++) {
-  const student = {
-    id: x,
-    input: [[0,0], [0,0]], //array of (x,y), 1º = arm, 2º = target
-    expected: [rand(), rand(), rand(), rand(), rand(), rand(), rand(), rand()], //expected degrees for each part of the arm
-    train: {lastErrorRate: 0, status: "inactive"} //train info
-  }
-  students.push(student)
-}
-
+// Gets ALL students
 app.get('/api/students', (req, res) => {
-  console.log(`Request Received: ${{...req}} | time: [ ${Date.now()} ]`)
-  res.json(students)
+  console.log(`[/Students] Request Received: ${{...req}} | time: [ ${Date.now()} ]`)
+  res.json(students.getFakeStudents())
 })
 
 
+// Gets the last enqueued student, then dequeues it
+app.get('/api/peek', (req, res) => {
+  console.log(`[/Peek] Request Received: ${{...req}} | time: [ ${Date.now()} ]`)
+  const response = {
+    isEmpty: queue.isEmpty(),
+    enqueued: queue.peek()?.value || null
+  }
+  queue.dequeue()
+  res.json(response)
+})
+
+
+// Updates a cache-stored student if the received student exists.
 app.post('/api/results', (req, res) => {
   const data = req.body
   
-  students.forEach(e => {
-    if(e.id == data.id) {
-      const update = { lastErrorRate: data.errorRate, status: data.status}
-      e.train = update
-      console.log("here", e)
-    }
-  })
+  students.updateStudent(data, queue)
+  console.log(data.id, students.getStudent(data.id))
 
-  console.log(data.id, students.find(e => e.id === data.id))
-  console.log('Received data:', req.body)
+  console.log('[/Results] Received data:', req.body)
   res.json({ message: 'Data received successfully' })
 })
+
+/* ----------- EXPERIMENTAL ----------- */
+
+  // students.forEach(e => {
+  //   if(e.id == data.id) {
+  //     const update = { lastErrorRate: data.errorRate, status: data.status}
+  //     e.train = update
+  //     console.log("here", e)
+  //   }
+  // })
+  // students.find(e => e.id === data.id)
 
 // Perform your database operations here
 console.log("performing things")
@@ -155,7 +191,7 @@ console.log("performing things")
 // });
 
 
-// Starts the server
+/* ----------- STARTS THE SERVER ----------- */
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`)
 })

@@ -1,0 +1,62 @@
+$running-color: #4AED65;
+$enqueued-color: #EA9E4B;
+$training-color: #4B80EA;
+$inactive-color: #A3A3A3;
+
+@mixin value-text-color($value) {
+  @if $value == "running" {
+    background-color: $running-color;
+  } @else if $value == "enqueued" {
+    background-color: $enqueued-color;
+  } @else if $value == "training" {
+    background-color: $training-color;
+  } @else if $value == "inactive" {
+    background-color: $inactive-color;
+  } @else {
+    background-color: var(--text-bright); // unknown
+    border: 1px solid var(--text-black);
+  }
+}
+
+
+.MachineStatus {
+
+  font-size: calc(.1rem + 100%);
+  width: 100%;
+
+  .MachineStatus__sizer {
+    width: 100%;
+  }
+
+  .MachineStatus__status {
+    display: flex;
+    width: fit-content;
+    padding: .3rem .9rem;
+    border-radius: 2rem;
+    font-family: var(--special-font);
+
+    .MachineStatus__status__label {
+      font-weight: 700;
+    }
+    .MachineStatus__status__current {
+      font-style: italic;
+      margin-inline: .5rem;
+    }
+
+    &.running  {
+      @include value-text-color("running");
+    }
+    &.enqueued  {
+      @include value-text-color("enqueued");
+    }
+    &.training  {
+      @include value-text-color("training");
+    }
+    &.inactive  {
+      @include value-text-color("inactive");
+    }
+    &.unknown  {
+      @include value-text-color("_");
+    }
+  }
+}

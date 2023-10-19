@@ -62,6 +62,7 @@ class Mount:
                 self.send_status(loss.item())
                 # self.send_status(self.output.detach().numpy().tolist())
                 # self.send_status(self.output.detach())
+                self.plot()
                 break
 
         print(f"Training completed in {epoch+1} epochs.")

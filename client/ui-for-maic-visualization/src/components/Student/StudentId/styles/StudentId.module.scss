@@ -1,0 +1,52 @@
+.StudentId {
+
+  display: flex;
+  align-items: center;
+  font-size: calc(.3rem + 100%);
+  width: fit-content;
+  background-color: var(--text-bright);
+  border: 1px solid black;
+  border-radius: .7rem;
+
+  .StudentId__sizer {
+    display: flex;
+    align-items: center;
+    width: inherit;
+  }
+
+  .StudentId__label {
+    background-color: black;
+    color: var(--text-bright);
+    padding: .4rem 1.3rem;
+    border-radius: .7rem;
+  }
+
+  .StudentId__number {
+    width: fit-content;
+    .StudentId__number_id {
+      padding: 0 1.2rem;
+    }
+  }
+}
+
+
+// 1. ( P ∧ Q ) ∨ ( ¬ R ∧ S ) 
+// 2. A ∧ ( B ∨ C ) ∧ ( D ∧ ¬ E )
+// 3. ( X ∨ Y ) ∧ ( Z ∧ ¬ W ) ∨ ( ¬V∧U)
+// 4. ( M ∧ N ) ∨ ( O ∧ ¬ P ) ∧ ( ¬Q ∨ R)
+// 5. ¬( D ∧ E ) ∧ ( F ∧ ( G ∨ ¬ H))
+// 6. ( I ∨ J ) ∧ ( K ∧ ¬ L ) ∧ ( M ∨ N ∧ O)
+// 7. ( S ∧ T ∨ ( U ∧ V ) ) ∧ ( W ∨ X ) ∧ ( ¬Y ∧ Z)
+// 8. ( A ∧ B ) ∨ ( C ∨ ( D ∧ E ) ∨ F )
+// 9. ( P ∧ Q ∨ R ) ∧ ( S ∧ ( T ∨ U ∧ V ))
+// 10. ¬( X ∧ Y ) ∧ ( Z ∨ ( A ∧ B ∧ ( C ∨ D ) ) )
+// 11. ( M ∧ ( N ∨ O ∧ P ) ) ∧ ( Q ∧ ¬( R ∨ S ) )
+// 12. ¬( D ∧ ( E ∨ ( F ∧ G ∧ H ) ))
+// 13. ( I ∧ ( J ∨ ( K ∧ ( L ∨ M ∧ N ) ) ) ) ∨ O
+// 14. ¬( ( S ∨ T ∧ U ) ∧ ( V ∧ W ∧( X ∨ Y ) ) )
+// 15. ( A ∧ ( B ∨ C ∧ D ) ) ∧ ( E ∨ ( F ∧ G ∨ ( H ∧ I ) ) )
+// 16. ¬( P ∨ Q ∧ ( R ∨ S ∧ ( T ∨ U ∧ V ) ) )
+// 17. ( X ∧ ( Y ∨ Z ∧ ( A ∨ B ∧ ( C ∨ D ∧ E ) ) ) )
+// 18. ( F ∨ G ∧ ( H ∧ I ∧ ( J ∧ K ∧ ( L ∧ M ) ) ) )
+// 19. ¬( N ∧ O ∧ ( P ∨ Q ∧ ( R ∨ S ∧ ( T ∨ U ) ) ) )
+// 20. ( V ∨ W ∧ ( X ∧ Y ∧ ( Z ∧ A ∧ ( B ∧ C ) ) ) )

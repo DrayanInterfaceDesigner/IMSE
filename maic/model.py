@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 
 class Model(nn.Module):
-    def __init__(self, num_input, num_output, num_hidden_layers=32, hidden_layer_size=128):
+    def __init__(self, num_input, num_output, num_hidden_layers=2, hidden_layer_size=256):
         super(Model, self).__init__()
 
         self.num_input = num_input
