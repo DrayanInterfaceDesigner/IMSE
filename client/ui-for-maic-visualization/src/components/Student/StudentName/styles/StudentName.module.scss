@@ -1,11 +1,9 @@
-.StudentName.module {
-  &StudentName.module__container {
-    /* Container styles */
-  }
-  &StudentName.module__mover {
-    /* Mover styles */
-  }
-  &StudentName.module__sizer {
-    /* Sizer styles */
+.StudentName {
+  font-size: calc(1.1rem + 100%);
+
+  .StudentName__sizer {
+    display: flex;
+    align-items: center;
+    width: inherit;
   }
 }

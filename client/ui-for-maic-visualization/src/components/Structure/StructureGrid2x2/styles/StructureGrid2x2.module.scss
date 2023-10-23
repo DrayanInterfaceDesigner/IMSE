@@ -1,11 +1,10 @@
-.StructureGrid2x2.module {
-  &StructureGrid2x2.module__container {
-    /* Container styles */
+.StructureGrid2x2 {
+
+  .StructureGrid2x2__content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
   }
-  &StructureGrid2x2.module__mover {
-    /* Mover styles */
-  }
-  &StructureGrid2x2.module__sizer {
-    /* Sizer styles */
-  }
+
+  
 }

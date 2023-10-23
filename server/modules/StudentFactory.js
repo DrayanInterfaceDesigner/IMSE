@@ -15,7 +15,7 @@ class StudentFactory {
                 id: x,
                 input: [[0,0], [0,0]], //array of (x,y), 1º = arm, 2º = target
                 expected: [rand(), rand(), rand(), rand(), rand(), rand(), rand(), rand()], //expected degrees for each part of the arm
-                train: {lastErrorRate: 0, status: "inactive"} //train info
+                train: {lastErrorRate: 0, output: [], status: "inactive"} //train info
             }
             this.students.push(student)
         }

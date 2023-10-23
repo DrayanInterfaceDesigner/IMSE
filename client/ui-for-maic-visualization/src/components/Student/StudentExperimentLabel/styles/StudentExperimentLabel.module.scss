@@ -1,0 +1,10 @@
+.StudentExperimentLabel {
+  font-size: calc(.6rem + 100%);
+  color: #3880A8;
+
+  .StudentExperimentLabel__sizer {
+    display: flex;
+    align-items: center;
+    width: inherit;
+  }
+}

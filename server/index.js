@@ -32,7 +32,7 @@ students.makeFakeStudents()
     id: x,
     input: [1, 2, 3, 4, 5, 6, 7, 8], //array of angles (can be random)
     expected: [1, 2, 3, 4, 5, 6, 7, 8], //expected angles for each part of the arm
-    train: {lastErrorRate: 0, status: "inactive"} // train info (BASE)
+    train: {lastErrorRate: 0, output: [], status: "inactive"} // train info (BASE)
   }
 */
 
@@ -202,3 +202,6 @@ console.log("performing things")
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`)
 })
+
+
+

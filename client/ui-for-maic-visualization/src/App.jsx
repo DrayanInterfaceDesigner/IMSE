@@ -5,6 +5,12 @@ import './styles/Basic.scss'
 import StructureGrid2x2 from './components/Structure/StructureGrid2x2/StructureGrid2x2'
 import StudentId from './components/Student/StudentId/StudentId'
 import MachineStatus from './components/Machine/MachineStatus/MachineStatus'
+import StudentName from './components/Student/StudentName/StudentName'
+import StudentExperimentLabel from './components/Student/StudentExperimentLabel/StudentExperimentLabel'
+import StudentGraph from './components/Student/StudentGraph/StudentGraph'
+import StudentFillet from './components/Student/StudentFillet/StudentFillet'
+import StructureGridCell from './components/Structure/StructureGridCell/StructureGridCell'
+import StudentCard from './components/Student/StudentCard/StudentCard'
 
 
 const get_users = async (endpoint) => {
@@ -56,8 +62,25 @@ function App() {
         {/* <Table users={users}></Table> */}
         {/* <p className="read-the-docs">{users.id}</p> */}
         <StructureGrid2x2>
-          <StudentId props={{sID: 1}}></StudentId>
-          <MachineStatus props={{currentStatus: 'running'}}></MachineStatus>
+          <StructureGridCell>
+            {/* <StudentFillet props={{sID: 8}}></StudentFillet>
+            <StudentExperimentLabel props={{number: '🤓'}}></StudentExperimentLabel>
+            <MachineStatus props={{currentStatus: 'running'}}></MachineStatus>
+            <StudentGraph></StudentGraph> */}
+            <StudentCard props={{experimentNumber: '🤓', currentStatus: 'running', sID: 8}}></StudentCard>
+          </StructureGridCell>
+          <StructureGridCell>
+            <StudentCard props={{experimentNumber: '🤓', currentStatus: 'running', sID: 8}}></StudentCard>
+          </StructureGridCell>
+          <StructureGridCell>
+            <StudentCard props={{experimentNumber: '🤓', currentStatus: 'running', sID: 8}}></StudentCard>
+          </StructureGridCell>
+          <StructureGridCell>
+            <StudentCard props={{experimentNumber: '🤓', currentStatus: 'running', sID: 8}}></StudentCard>
+          </StructureGridCell>
+          <StructureGridCell>
+            <StudentCard props={{experimentNumber: '🤓', currentStatus: 'running', sID: 8}}></StudentCard>
+          </StructureGridCell>
         </StructureGrid2x2>
       </div>
     </>

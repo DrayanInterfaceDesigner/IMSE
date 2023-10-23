@@ -1,4 +1,8 @@
 import React from 'react'
+import StudentFillet from '../StudentFillet/StudentFillet'
+import StudentExperimentLabel from '../StudentExperimentLabel/StudentExperimentLabel'
+import MachineStatus from '../../Machine/MachineStatus/MachineStatus'
+import StudentGraph from '../StudentGraph/StudentGraph'
 
 const StudentCard = ({props}) => {
   return (
@@ -7,8 +11,10 @@ const StudentCard = ({props}) => {
         <div className='StudentCard__mover'>
           <div className='StudentCard__sizer'>
             <div className='StudentCard__innerComponent'>
-              {/* Content */}
-              ...lot of stuff here
+              <StudentFillet props={{sID: props.sID}}></StudentFillet>
+              <StudentExperimentLabel props={{number: props.experimentNumber}}></StudentExperimentLabel>
+              <MachineStatus props={{currentStatus: props.currentStatus}}></MachineStatus>
+              <StudentGraph props={{data: ""}}></StudentGraph>
             </div>
           </div>
         </div>

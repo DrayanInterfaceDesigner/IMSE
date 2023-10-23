@@ -1,11 +1,22 @@
-.UserFillet {
-  &UserFillet__container {
+.StudentFillet {
+  width: fit-content;
+  .StudentFillet__container {
     /* Container styles */
   }
-  &UserFillet__mover {
+  .StudentFillet__mover {
     /* Mover styles */
   }
-  &UserFillet__sizer {
+  .StudentFillet__sizer {
     /* Sizer styles */
+  }
+
+  .StudentFillet__content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .StudentFillet__id {
+      margin-inline-start: 1.2rem;
+    }
   }
 }

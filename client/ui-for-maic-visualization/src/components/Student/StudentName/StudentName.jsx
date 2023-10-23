@@ -1,15 +1,15 @@
 import React from 'react'
+import styles from './styles/StudentName.module.scss'
 
 const StudentName = ({props}) => {
   return (
-    <div className='StudentName'>
-      <div className='StudentName__container'>
-        <div className='StudentName__mover'>
-          <div className='StudentName__sizer'>
-            <div className='StudentName__innerComponent'>
-              {/* Content */}
-              ...lot of stuff here
-            </div>
+    <div className={styles.StudentName}>
+      <div className={styles.StudentName__container}>
+        <div className={styles.StudentName__mover}>
+          <div className={styles.StudentName__sizer}>
+            <p className={styles.StudentName__name}>
+              StudentName
+            </p>
           </div>
         </div>
       </div>
