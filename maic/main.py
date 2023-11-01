@@ -6,14 +6,13 @@ from lib.mount import Mount
 from lib.train import Train
 
 def train_parallel(instance):
-    print(instance)
     instance.run()
 
 if __name__ == "__main__":
     
     # maic = MAIC(Model, Train)
 
-    print("Don't panic, the app is starting. It can take long times, specially in older machines.")
+    print("Don't panic, the app is starting, but it can take a while.")
 
     instances = []
 
@@ -25,7 +24,7 @@ if __name__ == "__main__":
     for student in students:
         net = Model(num_input=8, num_output=8)
         instances.append(
-            Mount(student, net)
+            Mount(student, net, graph=False)
         )
     
     # for instance in instances:

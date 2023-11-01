@@ -2,19 +2,20 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import numpy as np
+import time
 import matplotlib.pyplot as plt
 from lib.connection import fetch
 
 
 class Mount:
-    def __init__(self, student, model, max_epochs = 2000) -> None:
+    def __init__(self, student, model, max_epochs = 2000, graph=False, sleep=1) -> None:
         self.id = student['id']
-        self.expected = student['expected']
+        self.expected = student['train']['expected']
         self.net = model
         self.optimizer = optim.SGD(self.net.parameters(), lr=0.01)
         self.criterion = nn.MSELoss()
         # for god's sake move input to train, and call it "inputs"
-        self.inputs = torch.tensor(student['input'], dtype=torch.float32)
+        self.inputs = torch.tensor(student['train']['inputs'], dtype=torch.float32)
         self.output = []
         self.inits = []
         self.epochs = []
@@ -25,11 +26,13 @@ class Mount:
             'body': {'id': self.id, 'errorRate': 'null', 'status': self.status},
             'headers': {'Content-Type': 'application/json'}
         }
+        self.graph = graph
+        self.sleep = sleep
 
     def run(self):
+        print(f"ID [ {self.id} ] | Training started.")
         for epoch in range(self.max_epochs):
-            # inputs = torch.rand(8) * 360 # Generate random input data
-            inputs = torch.rand(8)
+            inputs = self.inputs
             append_as_arr(inputs, self.inits)
 
 
@@ -37,10 +40,10 @@ class Mount:
             outputs = self.net(inputs)
             self.output = outputs
 
-            print("IN: ", inputs)
-            for x in self.output.detach().cpu().numpy():
-                print(x, end="| ")
-            print("\n")
+            # print("IN: ", inputs)
+            # for x in self.output.detach().cpu().numpy():
+            #     print(x, end="| ")
+            # print("\n")
 
             # Define the expected outputs (supervisor's job)
             expected_outputs = torch.tensor(self.expected, dtype=torch.float32)
@@ -52,7 +55,7 @@ class Mount:
             loss.backward()
             self.optimizer.step()
 
-            print("LOSS: ", loss.item() % 100)
+            # print("LOSS: ", loss.item() % 100)
             self.epochs.append(loss.item() % 100)
             inputs = self.output.detach()
             
@@ -64,10 +67,11 @@ class Mount:
                 self.send_status(loss.item())
                 # self.send_status(self.output.detach().numpy().tolist())
                 # self.send_status(self.output.detach())
-                self.plot()
                 break
+            time.sleep(self.sleep)
 
-        print(f"Training completed in {epoch+1} epochs.")
+        print(f"ID [ {self.id} ] | Finished Training with loss [ {loss.item()} ] | Completed in {epoch+1} epochs.\n")
+        if(self.graph): self.plot()
 
     def send_status(self, package):
         self.req['body']['status'] = self.status

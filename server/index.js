@@ -1,10 +1,10 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const mysql = require('mysql2');
+const mysql = require('mysql2')
 const app = express()
-const cors = require('cors');
-const { StudentFactory } = require('./modules/StudentFactory');
-const { Queue } = require('./modules/Queue');
+const cors = require('cors')
+const { StudentFactory } = require('./modules/StudentFactory')
+const { Queue } = require('./modules/Queue')
 const {SQLJinn} = require('./modules/SQLJinn')
 
 require('dotenv').config()
@@ -15,6 +15,11 @@ const port = process.env.PORT
 
 app.use(cors())
 app.use(bodyParser.json())
+
+const getTime = ()=> {
+  d = new Date()
+  return `(UTC | hh:mm:ss:ms) ${d.getUTCHours()}:${d.getUTCMinutes()}:${d.getUTCSeconds()}:${d.getUTCMilliseconds()}`
+}
 
 
 /* -----------HERE STARTS THE STUFF----------- */
@@ -30,10 +35,12 @@ students.makeFakeStudents()
 
   Warning, they must have this look (or be adapted later), to be used properly:
   {
-    id: x,
-    input: [1, 2, 3, 4, 5, 6, 7, 8], //array of angles (can be random)
-    expected: [1, 2, 3, 4, 5, 6, 7, 8], //expected angles for each part of the arm
-    train: {lastErrorRate: 0, output: [], status: "inactive"} // train info (BASE)
+    id: x, //array of (x,y), 1º = arm, 2º = target //expected degrees for each part of the arm
+    train: {
+        inputs: [rand(), rand(), rand(), rand(), rand(), rand(), rand(), rand()], 
+        expected: [rand(), rand(), rand(), rand(), rand(), rand(), rand(), rand()],
+        lastErrorRate: 0, output: [], status: "inactive"
+    } //train info (BASE)
   }
 */
 
@@ -56,21 +63,21 @@ const queue = new Queue()
 app.get('/api/:uID/idealconfig', (req, res) => {
   const { uID } = req.params
   const id = `${uID}`
-  console.log(`Request Received: ${{...req}} | time: [ ${Date.now()} ]`)
+  console.log(`[${uID}/idealcondfig] Request Received: ${{...req}} | time: [ ${getTime()} ]`)
   res.json({ uID: id, session: 3, lastExperiment: 45 })
 })
 
 
 // Gets ALL students
 app.get('/api/students', (req, res) => {
-  console.log(`[/Students] Request Received: ${{...req}} | time: [ ${Date.now()} ]`)
+  console.log(`[/students] Request Received: ${{...req}} | time: [ ${getTime()} ]`)
   res.json(students.getFakeStudents())
 })
 
 
 // Gets the last enqueued student
 app.get('/api/peek', (req, res) => {
-  console.log(`[/Peek] Request Received: ${{...req}} | time: [ ${Date.now()} ]`)
+  console.log(`[/peek] Request Received: ${{...req}} | time: [ ${getTime()} ]`)
   const response = {
     isEmpty: queue.isEmpty(),
     enqueued: queue.peek()?.value || null
@@ -81,7 +88,7 @@ app.get('/api/peek', (req, res) => {
 
 // Dequeues the FIFO student
 app.get('/api/dequeue', (req, res) => {
-  console.log(`[/dequeue] Request Received: ${{...req}} | time: [ ${Date.now()} ]`)
+  console.log(`[/dequeue] Request Received: ${{...req}} | time: [ ${getTime()} ]`)
   queue.dequeue()
   res.json({ message: 'Dequeued successfully!' })
 })
@@ -92,9 +99,8 @@ app.post('/api/results', (req, res) => {
   const data = req.body
   
   students.updateStudent(data, queue)
-  console.log(data.id, students.getStudent(data.id))
 
-  console.log('[/Results] Received data:', req.body)
+  console.log(`[/results] Received data. | time: [ ${getTime()} ]`)
   res.json({ message: 'Data received successfully' })
 })
 
@@ -110,7 +116,7 @@ app.post('/api/results', (req, res) => {
   // students.find(e => e.id === data.id)
 
 // Perform your database operations here
-console.log("performing things")
+// console.log("performing things")
 
 
 // Fetch all students from the "students" table
@@ -186,6 +192,29 @@ console.log("performing things")
 /* ----------- STARTS THE SERVER ----------- */
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`)
+  console.log(`
+    | \x1b[36m Avaliable Routes \x1b[0m|
+    \n    ==========================\n
+      \x1b[33m /api/:uID/idealconfig
+      \x1b[36m Description:  Gets the ideal configuration for a specified student (ID)\x1b[0m
+    \n    ==========================
+
+      \x1b[33m /api/students
+      \x1b[36m Description:  Gets ALL students\x1b[0m
+    \n    ==========================
+
+      \x1b[33m /api/peek
+      \x1b[36m Description:  Gets the last enqueued student\x1b[0m
+    \n    ==========================
+
+      \x1b[33m /api/dequeue
+      \x1b[36m Description:  Dequeues the FIFO student\x1b[0m
+    \n    ==========================
+
+      \x1b[33m /api/results
+      \x1b[36m Description:  Updates a cache-stored student if the received student exists.\x1b[0m
+    \n    ==========================\n
+  `)
 })
 
 
