@@ -13,6 +13,8 @@ class Mount:
         self.net = model
         self.optimizer = optim.SGD(self.net.parameters(), lr=0.01)
         self.criterion = nn.MSELoss()
+        # for god's sake move input to train, and call it "inputs"
+        self.inputs = torch.tensor(student['input'], dtype=torch.float32)
         self.output = []
         self.inits = []
         self.epochs = []
