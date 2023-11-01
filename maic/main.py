@@ -1,9 +1,9 @@
-import connection
-from maic import MAIC
-import train
+from lib.connection import fetch
+from lib.maic import MAIC
 import multiprocessing
-from model import Model
-from mount import Mount
+from lib.model import Model
+from lib.mount import Mount
+from lib.train import Train
 
 def train_parallel(instance):
     print(instance)
@@ -11,10 +11,13 @@ def train_parallel(instance):
 
 if __name__ == "__main__":
     
-    maic = MAIC(Model, train.Train)
+    # maic = MAIC(Model, Train)
+
+    print("Don't panic, the app is starting. It can take long times, specially in older machines.")
+
     instances = []
 
-    students = connection.fetch("http://localhost:5500/api/students", {
+    students = fetch("http://localhost:5500/api/students", {
         'method': 'GET',
         'headers': {'Content-Type': 'application/json'}
     })
@@ -33,4 +36,4 @@ if __name__ == "__main__":
     pool.close()
     pool.join()
 
-    maic.parallelize()
+    # maic.parallelize()

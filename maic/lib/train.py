@@ -1,8 +1,8 @@
-from maic import MAIC
-import connection
+from lib.maic import MAIC
+from lib.connection import fetch
+from lib.model import Model
+from lib.mount import Mount
 import random
-from model import Model
-from mount import Mount
 
 class Train:
     def __init__(self, maic: MAIC, model, info) -> None:
@@ -31,7 +31,7 @@ class Train:
                 req['body']['errorRate'] = 99.9
                 self.emmit_alert_finished(None)
 
-            connection.fetch("http://localhost:5500/api/results", req)
+            fetch("http://localhost:5500/api/results", req)
 
     def emmit_alert_finished(self, what):
         self.maic.receive_signal(self, what)

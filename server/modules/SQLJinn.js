@@ -1,38 +1,6 @@
 const mysql = require('mysql2')
 const {EnvJinn} = require('./EnvJinn')
 
-const connection = mysql.createConnection({
-    host: '127.0.0.1',
-    user: 'root',
-    password: 'PC@123',
-    database: 'TestZone',
-    port: 3319,
-})
-  
-connection.connect((err) => {
-    if (err) {
-      console.error('Error connecting to MySQL:', err);
-      return;
-    }
-    console.log('Connected to MySQL server');
-})
-
-const query = async (query) => {
-    try {
-        const res = await new Promise((resolve, reject) => {
-            connection.query(query, (err, res) => {
-                if(err) {console.log(`Error in query: ${err}`); reject(err)}
-                else resolve(res)
-            }) 
-        })
-        return await res
-    }
-    catch(err) {
-        console.log('The call failed, the DB may be down.')
-        return err
-    }
-}
-
 class SQLJinn {
     
     constructor(envPath) {

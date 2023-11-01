@@ -24,7 +24,7 @@ class StudentFactory {
 
     updateStudent(student, queue) {
         this.students.forEach(e => {
-            if(e.id == data.id) {
+            if(e.id == student.id) {
               const update = { lastErrorRate: student.errorRate, status: student.status}
               e.train = update
 

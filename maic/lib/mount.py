@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.optim as optim
 import numpy as np
 import matplotlib.pyplot as plt
-import connection
+from lib.connection import fetch
 
 
 class Mount:
@@ -71,7 +71,7 @@ class Mount:
         self.req['body']['status'] = self.status
         self.req['body']['errorRate'] = package
         self.req['body']['output'] = self.output.detach().numpy().tolist()
-        connection.fetch("http://localhost:5500/api/results", self.req)
+        fetch("http://localhost:5500/api/results", self.req)
 
     def plot(self):
         plt.plot(list(range(len(self.epochs))), self.epochs)
