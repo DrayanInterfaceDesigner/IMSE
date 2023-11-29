@@ -1,6 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const mysql = require('mysql2')
+const fs = require('fs')
 const app = express()
 const cors = require('cors')
 const { StudentFactory } = require('./modules/StudentFactory')
@@ -97,12 +98,26 @@ app.get('/api/dequeue', (req, res) => {
 // Updates a cache-stored student if the received student exists.
 app.post('/api/results', (req, res) => {
   const data = req.body
-  
+
   students.updateStudent(data, queue)
+
+  const studentsData = {
+    students: students.getFakeStudents()
+  }
+
+  const jsonData = JSON.stringify(studentsData, null, 2)
+  fs.writeFile('./results/students.json', jsonData, (err) => {
+    if (err) {
+      console.error('Error writing students data:', err)
+    } else {
+      console.log('Students data written successfully')
+    }
+  })
 
   console.log(`[/results] Received data. | time: [ ${getTime()} ]`)
   res.json({ message: 'Data received successfully' })
 })
+
 
 /* ----------- EXPERIMENTAL ----------- */
 

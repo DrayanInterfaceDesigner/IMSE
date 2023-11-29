@@ -37,7 +37,9 @@ function App() {
   //   const fetchData = async () => {
   //     try {
   //       const data = await get_users('http://localhost:5500/api/students');
+  //       console.log(users)
   //       setUsers(data);
+        
   //     } catch (error) {
   //       console.error(error);
   //     }
@@ -52,10 +54,9 @@ function App() {
   //   }
   
   // }, [])
-  
 
 
-  console.log(users)
+
   return (
     <>
       <div>

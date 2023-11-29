@@ -17,7 +17,8 @@ class StudentFactory {
                     inputs: [rand(), rand(), rand(), rand(), rand(), rand(), rand(), rand()], 
                     expected: [rand(), rand(), rand(), rand(), rand(), rand(), rand(), rand()],
                     lastErrorRate: 0, 
-                    output: [], 
+                    output: [],
+                    outputs: [],
                     status: "inactive"
                 } //train info
             }
@@ -29,7 +30,8 @@ class StudentFactory {
     updateStudent(student, queue) {
         this.students.forEach(e => {
             if(e.id == student.id) {
-              const update = { ...e.train, output: student.output, lastErrorRate: student.errorRate, status: student.status}
+              const outputs = [...e.train.outputs, student.output]
+              const update = { ...e.train, output: student.output, outputs, lastErrorRate: student.errorRate, status: student.status}
               e.train = update
 
               if(update.status == "finished") queue.enqueue(e)
