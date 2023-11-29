@@ -1,12 +1,13 @@
 import React from 'react'
+import styles from './styles/StructureGridCell.module.scss'
 
 const StructureGridCell = ({children, props}) => {
   return (
-    <div className='StructureGridCell'>
-      <div className='StructureGridCell__container'>
-        <div className='StructureGridCell__mover'>
-          <div className='StructureGridCell__sizer'>
-            <div className='StructureGridCell__innerComponent'>
+    <div className={styles.StructureGridCell}>
+      <div className={styles.StructureGridCell__container}>
+        <div className={styles.StructureGridCell__mover}>
+          <div className={styles.StructureGridCell__sizer}>
+            <div className={styles.StructureGridCell__innerComponent}>
               {children}
             </div>
           </div>
