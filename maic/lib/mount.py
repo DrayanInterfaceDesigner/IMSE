@@ -19,6 +19,7 @@ class Mount:
         self.output = []
         self.inits = []
         self.epochs = []
+        self.losses = []
         self.max_epochs = max_epochs
         self.status = 'inactive'
         self.req = {
@@ -31,7 +32,9 @@ class Mount:
 
     def run(self):
         print(f"ID [ {self.id} ] | Training started.")
+        _ = 0
         for epoch in range(self.max_epochs):
+            _ = epoch
             inputs = self.inputs
             append_as_arr(inputs, self.inits)
 
@@ -58,7 +61,9 @@ class Mount:
             # print("LOSS: ", loss.item() % 100)
             self.epochs.append(loss.item() % 100)
             inputs = self.output.detach()
-            
+
+
+            self.losses.append(loss.item())
             if loss.item() > 0.01:
                 self.status = 'running'
                 self.send_status(loss.item())
@@ -70,7 +75,7 @@ class Mount:
                 break
             time.sleep(self.sleep)
 
-        print(f"ID [ {self.id} ] | Finished Training with loss [ {loss.item()} ] | Completed in {epoch+1} epochs.\n")
+        print(f"ID [ {self.id} ] | Finished Training with loss [ {loss.item()} ] | Completed in {_+1} epochs.\n")
         if(self.graph): self.plot()
 
     def send_status(self, package):
@@ -80,11 +85,15 @@ class Mount:
         fetch("http://localhost:5500/api/results", self.req)
 
     def plot(self):
-        plt.plot(list(range(len(self.epochs))), self.epochs)
+        # self.losses = self.losses.reverse()
+        # self.losses.reverse()
+
+            
+        plt.plot(list(range(len(self.epochs))), self.losses)
 
         plt.xlabel("Epochs")
-        plt.ylabel('Error Rate (%)')
-        plt.title('Error Rate vs. Tries')
+        plt.ylabel('Loss')
+        plt.title('Loss X Time')
 
         plt.grid()
         plt.show()
