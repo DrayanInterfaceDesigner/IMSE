@@ -4,6 +4,7 @@ import multiprocessing
 from lib.model import Model
 from lib.mount import Mount
 from lib.train import Train
+import random
 
 def train_parallel(instance):
     instance.run()
@@ -22,9 +23,9 @@ if __name__ == "__main__":
     })
 
     for student in students:
-        net = Model(num_input=8, num_output=8)
+        net = Model(num_input=8, num_output=8, num_hidden_layers=random.randint(2, 16), hidden_layer_size=random.randint(32, 256))
         instances.append(
-            Mount(student, net, graph=False)
+            Mount(student, net, graph=True)
         )
     
     # for instance in instances:
